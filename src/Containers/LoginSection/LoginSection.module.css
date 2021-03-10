@@ -1,0 +1,27 @@
+.LoginSection {
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.FormLogin {
+  display: flex;
+  flex-direction: column;
+  height: 20vh;
+  width: 20vw;
+}
+
+.Input {
+  padding: 0.4rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.LoginButton {
+  width: 20%;
+  height: 2rem;
+}
+
+.LabelForm {
+  font-size: 1.2rem;
+  margin-left: 1rem;
+}
