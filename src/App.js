@@ -1,15 +1,16 @@
 import './App.css';
-import Navbar from './Container/Navbar/Navbar';
-import { BrowserRouter } from 'react-router-dom';
-import FirstPage from './Components/FirstPage/FirstPage';
-import Footer from './Components/Footer/Footer';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import Home from './Containers/Home/Home';
+import LoginPage from './Containers/LoginPage/LoginPage';
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Navbar />
-        <FirstPage />
-        <Footer />
+        <Switch>
+          <Route path="/" exact component={Home} />
+          <Route path="/login" exact component={LoginPage} />
+          <Route path="/Register" exact component={Home} />
+        </Switch>
       </BrowserRouter>
     </div>
   );
