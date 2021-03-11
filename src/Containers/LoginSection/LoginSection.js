@@ -9,8 +9,18 @@ class FormSection extends Component {
   findIfUserExists = (e) => {
     e.preventDefault();
     console.log(this.state);
-    console.log(this.props);
+    const users = this.props.props.users;
+    const yea = users.find((el) => {
+      return el.username === this.state.username;
+    });
+    if (this.state.password === yea.password) {
+      console.log('THIS IS THE CORRECT PASSWORD YOU CAN NOW ENTER');
+      this.nextPath(`/user/${yea.id}`);
+    }
   };
+  nextPath(path) {
+    this.props.history.push(path);
+  }
   handleEmailChange = (e) => {
     this.setState({ username: e.target.value });
   };

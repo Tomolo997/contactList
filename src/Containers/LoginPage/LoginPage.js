@@ -6,7 +6,7 @@ const LoginPage = (props) => {
   return (
     <>
       <Navbar />
-      <FormSection props={props} />
+      <FormSection props={props} history={props.history} />
       <Footer />
     </>
   );
