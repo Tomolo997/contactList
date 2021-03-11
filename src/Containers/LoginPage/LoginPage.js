@@ -2,11 +2,11 @@ import React from 'react';
 import Navbar from '../../Components/Navbar/Navbar';
 import Footer from '../../Components/Footer/Footer';
 import FormSection from '../LoginSection/LoginSection';
-const LoginPage = () => {
+const LoginPage = (props) => {
   return (
     <>
       <Navbar />
-      <FormSection />
+      <FormSection props={props} />
       <Footer />
     </>
   );
