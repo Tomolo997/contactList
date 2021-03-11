@@ -34,7 +34,13 @@ class App extends Component {
               )}
             />
             <Route path="/Register" exact component={RegisterPage} />
-            <Route path="/user/:id" exact component={User} />
+            <Route
+              path="/user/:id"
+              exact
+              render={(routeProps) => (
+                <User users={this.state.users} {...routeProps} />
+              )}
+            />
           </Switch>
         </BrowserRouter>
       </div>
