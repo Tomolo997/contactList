@@ -36,8 +36,8 @@ class App extends Component {
             phoneNumber: '031258407',
           },
           {
-            firstName: 'Vojka',
-            lastName: 'Vrecic',
+            firstName: 'Luka',
+            lastName: 'Ovsenjak',
             phoneNumber: '031569885',
           },
         ],

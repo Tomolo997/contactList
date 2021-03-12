@@ -24,7 +24,11 @@ class UserInfo extends Component {
           <div>
             {this.state.contacts.length > 0
               ? this.state.contacts.map((el) => {
-                  return <p>{el.firstName}</p>;
+                  return (
+                    <p>
+                      {el.firstName} {el.lastName} {el.phoneNumber}
+                    </p>
+                  );
                 })
               : contacts}
           </div>
