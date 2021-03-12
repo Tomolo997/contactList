@@ -1,66 +1,73 @@
 import classes from './LoginSection.module.css';
-import React, { Component } from 'react';
+import React, { useState, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
+import { CredentialContext } from '../../App';
 
-class FormSection extends Component {
-  state = {
-    username: '',
-    password: '',
-  };
-  findIfUserExists = (e) => {
-    e.preventDefault();
-    console.log(this.state);
-    const users = this.props.props.users;
-    const yea = users.find((el) => {
-      return el.username === this.state.username;
-    });
-    if (this.state.password === yea.password) {
-      console.log('THIS IS THE CORRECT PASSWORD YOU CAN NOW ENTER');
-      this.nextPath(`/user/${yea.id}`);
+function FormSection() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [, setCredentials] = useContext(CredentialContext);
+  const handleError = async (res) => {
+    if (!res.ok) {
+      const { message } = await res.json();
+      throw new Error(message);
     }
+    return res.json();
   };
-  nextPath(path) {
-    this.props.history.push(path);
-  }
-  handleEmailChange = (e) => {
-    this.setState({ username: e.target.value });
+  const login = (e) => {
+    e.preventDefault();
+    fetch('http://localhost:4000/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'Application/json',
+      },
+      body: JSON.stringify({
+        username,
+        password,
+      }),
+    })
+      .then(handleError)
+      .then(() => {
+        setError('');
+        //if we registered correctly we go to the homepage
+        setCredentials({ username, password });
+        history.push('/');
+      })
+      .catch((err) => {
+        setError(err.message);
+      });
   };
-  handlePasswordChange = (e) => {
-    this.setState({ password: e.target.value });
-  };
-  render() {
-    return (
-      <div className={classes.LoginSection}>
-        <form className={classes.FormLogin} action="">
-          <label className={classes.LabelForm} htmlFor="username">
-            Email
-          </label>
-          <input
-            className={classes.Input}
-            onChange={this.handleEmailChange}
-            type="text"
-            name="username"
-          />
-          <label className={classes.LabelForm} htmlFor="password">
-            Password
-          </label>
-          <input
-            className={classes.Input}
-            onChange={this.handlePasswordChange}
-            type="password"
-            name="password"
-          />{' '}
-          <br />
-          <button
-            onClick={this.findIfUserExists}
-            className={classes.LoginButton}
-            type="submit"
-          >
-            Log in
-          </button>
-        </form>
-      </div>
-    );
-  }
+  const history = useHistory();
+  return (
+    <div className={classes.LoginSection}>
+      {error}
+      <form onSubmit={login} className={classes.FormLogin} action="">
+        <label className={classes.LabelForm} htmlFor="username">
+          Email
+        </label>
+        <input
+          onChange={(e) => setUsername(e.target.value)}
+          className={classes.Input}
+          type="text"
+          name="username"
+        />
+        <label className={classes.LabelForm} htmlFor="password">
+          Password
+        </label>
+        <input
+          onChange={(e) => setPassword(e.target.value)}
+          className={classes.Input}
+          type="password"
+          name="password"
+        />{' '}
+        <br />
+        <button className={classes.LoginButton} type="submit">
+          Log in
+        </button>
+      </form>
+    </div>
+  );
 }
 
 export default FormSection;
