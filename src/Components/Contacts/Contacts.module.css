@@ -1,0 +1,16 @@
+.Contacts {
+  margin-bottom: 10rem;
+}
+.Contact {
+  margin-bottom: 2rem;
+  display: flex;
+  border: 1px solid black;
+  padding: 1rem;
+}
+.Firstname {
+  margin-right: 1rem;
+  font-size: 1.4rem;
+}
+.FirstnameSpan {
+  color: red;
+}

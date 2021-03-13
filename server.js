@@ -94,9 +94,10 @@ app.get('/contacts', async (req, res) => {
   const { authorization } = req.headers;
   const [, token] = authorization.split(' ');
   const [username, password] = token.split(':');
-  //if the user exist then we return and send status 500
   //we find the user send from the front end and if the user doesnt exist then the status code 403 is sent
+
   const user = await User.findOne({ username }).exec();
+  console.log(user, 'user');
   if (!user || user.password !== password) {
     res.status(403);
     res.json({ message: 'Invalid access' });

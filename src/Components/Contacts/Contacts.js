@@ -1,14 +1,8 @@
+import classes from './Contacts.module.css';
 import React, { useState, useContext, useEffect } from 'react';
 import { CredentialContext } from '../../App';
 const Contacts = () => {
-  const [contacts, setContacts] = useState([
-    {
-      id: '1',
-      firstName: 'Tomaz',
-      lastName: 'Ovsenjak',
-      phoneNumber: '031258407',
-    },
-  ]);
+  const [contacts, setContacts] = useState([]);
 
   const [credentials] = useContext(CredentialContext);
   const [firstName, setFirstName] = useState('');
@@ -24,12 +18,15 @@ const Contacts = () => {
       },
     })
       .then(
-        (res) => res.json()
+        (res) => {
+          return res.json();
+        }
         //if we registered correctly we go to the homepage
       )
-      .then(({ contacts }) => {
-        console.log(contacts);
-        setContacts(contacts);
+      .then((contacts) => {
+        if (contacts !== null) {
+          setContacts(contacts.contacts);
+        } else return;
       });
   }, []);
 
@@ -65,25 +62,30 @@ const Contacts = () => {
 
   const editContact = () => {};
 
+  let contactsMap = contacts.map((contact) => {
+    return (
+      <div className={classes.Contact} key={contact._id}>
+        <div className={classes.Firstname}>
+          First name:{' '}
+          <span className={classes.FirstNameSpan}>{contact.firstName}</span>
+        </div>
+        <div className={classes.Firstname}>
+          Last name:{' '}
+          <span className={classes.FirstNameSpan}>{contact.lastName}</span>
+        </div>
+        <div className={classes.Firstname}>
+          Phone number:{' '}
+          <span className={classes.FirstNameSpan}>{contact.phoneNumber}</span>
+        </div>
+        <button>Edit</button>
+        <button>Delete</button>
+      </div>
+    );
+  });
+
   return (
-    <div>
-      {contacts.map((contact) => {
-        return (
-          <div key={contact._id}>
-            <div>
-              First name: <span>{contact.firstName} </span>
-            </div>
-            <div>
-              Last name: <span>{contact.lastName}</span>
-            </div>
-            <div>
-              Phone number: <span>{contact.phoneNumber}</span>
-            </div>
-            <button>Edit</button>
-            <button>Delete</button>
-          </div>
-        );
-      })}
+    <div className={classes.Contacts}>
+      {credentials ? contactsMap : null}
 
       <br />
       <form
