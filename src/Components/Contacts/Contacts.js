@@ -26,6 +26,7 @@ const Contacts = () => {
       .then((contacts) => {
         if (contacts !== null) {
           setContacts(contacts.contacts);
+          console.log(credentials);
         } else return;
       });
   }, []);

@@ -11,6 +11,6 @@
   margin-right: 1rem;
   font-size: 1.4rem;
 }
-.FirstnameSpan {
-  color: red;
+.FirstNameSpan {
+  font-weight: 700;
 }

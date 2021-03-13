@@ -1,41 +1,33 @@
 import classes from './UserInfo.module.css';
-import React, { Component } from 'react';
+import React, { Component, useContext } from 'react';
+import { CredentialContext } from '../../App';
+import Contacts from '../../Components/Contacts/Contacts';
+function UserInfo() {
+  const [credentials] = useContext(CredentialContext);
+  let showWelcome = (
+    <div>
+      <h1 className={classes.Heading1}>
+        Contact<span className={classes.ListSpan}>List</span>{' '}
+      </h1>
+      <p className={classes.Paragraph}>Sign up to manage your Contact list</p>
+      <p className={classes.Paragraph}></p>
+    </div>
+  );
+  return (
+    <div className={classes.FirstPage}>
+      {credentials ? (
+        <h1 className={classes.Welcome}>
+          {' '}
+          Welcome {credentials && credentials.username}
+        </h1>
+      ) : (
+        showWelcome
+      )}
 
-class UserInfo extends Component {
-  state = {
-    username: '',
-    password: '',
-    contacts: [],
-  };
-  componentDidMount() {
-    console.log(this.props.props.users);
-    const user = this.props.props.users.find(
-      (el) => el.id === this.props.props.match.params.id
-    );
-    console.log(user);
-    this.setState({ username: user.username, contacts: user.contacts });
-  }
-  render() {
-    let contacts = <p>This user has no contacts</p>;
-
-    return (
-      <div className={classes.UserInfo}>
-        <div className={classes.Username}>
-          <div>
-            {this.state.contacts.length > 0
-              ? this.state.contacts.map((el) => {
-                  return (
-                    <p>
-                      {el.firstName} {el.lastName} {el.phoneNumber}
-                    </p>
-                  );
-                })
-              : contacts}
-          </div>
-        </div>
-      </div>
-    );
-  }
+      {/* if the credentials are valid and they exist then base out the Contacts */}
+      {credentials && <Contacts />}
+    </div>
+  );
 }
 
 export default UserInfo;

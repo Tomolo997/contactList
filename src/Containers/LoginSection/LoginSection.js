@@ -5,6 +5,7 @@ import { CredentialContext } from '../../App';
 
 function FormSection() {
   const [username, setUsername] = useState('');
+  const [loggedIn, setloggedIn] = useState(false);
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [, setCredentials] = useContext(CredentialContext);
@@ -32,7 +33,7 @@ function FormSection() {
         setError('');
         //if we registered correctly we go to the homepage
         setCredentials({ username, password });
-        history.push('/');
+        history.push(`/user/${username}`);
       })
       .catch((err) => {
         setError(err.message);

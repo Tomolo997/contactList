@@ -15,17 +15,8 @@ const FirstPage = () => {
   );
   return (
     <div className={classes.FirstPage}>
-      {credentials ? (
-        <h1 className={classes.Welcome}>
-          {' '}
-          Welcome {credentials && credentials.username}
-        </h1>
-      ) : (
-        showWelcome
-      )}
-
-      {/* if the credentials are valid and they exist then base out the Contacts */}
-      {credentials && <Contacts />}
+      <h1 className={classes.Welcome}> Welcome</h1>
+      <h1 className={classes.Welcome}> Sign up or login</h1>
     </div>
   );
 };
