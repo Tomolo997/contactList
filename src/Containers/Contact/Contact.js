@@ -9,11 +9,16 @@ const Contact = (props) => {
   const history = useHistory();
   const [credentials] = useContext(CredentialContext);
   const [firstName, setFirstName] = useState('');
-  const [deleteItem, setDeleteItem] = useState(false);
+  const [update, setUpdate] = useState(false);
   const [deleted, setDeleted] = useState(false);
   const [lastName, setLastName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [id, setId] = useState('');
+
+  const [updatedFirstName, setUpdatedFirstName] = useState('');
+  const [updatedLastName, setUpdatedLastName] = useState('');
+  const [updatedPhoneNumber, setUpdatedPhoneNumber] = useState('');
+
   const fillOutTheContact = (contacts) => {
     const contact = contacts.find(
       (el) => el._id === props.match.params.idContact
@@ -52,7 +57,43 @@ const Contact = (props) => {
         Authorization: `Basic ${credentials.username}:${credentials.password}`,
       },
     });
+    setDeleted(true);
   };
+
+  const UpdateUser = () => {
+    console.log('first name', updatedFirstName);
+    console.log('Last name', updatedLastName);
+    console.log('PhoneNumber', updatedPhoneNumber);
+    setUpdate(!update);
+  };
+
+  let UpdateMe = (
+    <div>
+      <div>
+        First name:{' '}
+        <input
+          onChange={(e) => setUpdatedFirstName(e.target.value)}
+          type="text"
+        />
+      </div>
+      <div>
+        Last name:{' '}
+        <input
+          onChange={(e) => setUpdatedLastName(e.target.value)}
+          type="text"
+        />
+      </div>
+      <div>
+        phone number:{' '}
+        <input
+          onChange={(e) => setUpdatedPhoneNumber(e.target.value)}
+          type="text"
+        />
+      </div>
+
+      <button>Update Me</button>
+    </div>
+  );
 
   return (
     <div>
@@ -64,9 +105,16 @@ const Contact = (props) => {
             <div>Last name: {lastName}</div>
             <div>phone number: {phoneNumber}</div>
             <button onClick={() => deleteUser(id)}>Delete</button>
+            <button onClick={UpdateUser}>Update</button>
+            {update ? UpdateMe : null}
           </div>
         ) : (
-          <Link to={'/user/' + credentials.username}>Return home</Link>
+          <Link
+            className={classes.ReturnHomeLink}
+            to={'/user/' + credentials.username}
+          >
+            Return home
+          </Link>
         )}
       </div>
       <Footer></Footer>

@@ -9,4 +9,12 @@
   width: 50rem;
   background-color: aqua;
   margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.ReturnHomeLink {
+  font-size: 2rem;
+  text-decoration: none;
 }
