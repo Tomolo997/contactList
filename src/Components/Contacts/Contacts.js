@@ -89,8 +89,6 @@ const Contacts = () => {
             Phone number:{' '}
             <span className={classes.FirstNameSpan}>{contact.phoneNumber}</span>
           </div>
-          <button>Edit</button>
-          <button>Delete</button>
         </div>
       </Link>
     );

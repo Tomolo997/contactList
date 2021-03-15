@@ -103,5 +103,6 @@ app.get('/contacts', async (req, res) => {
     return;
   }
   const contact = await Contacts.findOne({ userId: user._id }).exec();
+  console.log(contact);
   res.json(contact);
 });

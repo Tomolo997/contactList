@@ -1,0 +1,12 @@
+.Contact {
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+.ContactInfo {
+  height: 20rem;
+  width: 50rem;
+  background-color: aqua;
+  margin-top: 2rem;
+}
