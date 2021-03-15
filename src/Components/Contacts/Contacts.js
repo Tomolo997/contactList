@@ -1,6 +1,7 @@
 import classes from './Contacts.module.css';
 import React, { useState, useContext, useEffect } from 'react';
 import { CredentialContext } from '../../App';
+import { Link } from 'react-router-dom';
 const Contacts = () => {
   const [contacts, setContacts] = useState([]);
 
@@ -8,6 +9,7 @@ const Contacts = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [errorWithCredentials, seterrorWithCredentials] = useState(false);
 
   useEffect(() => {
     fetch('http://localhost:4000/contacts', {
@@ -45,6 +47,13 @@ const Contacts = () => {
   };
 
   const appendContact = (e) => {
+    if (firstName === '' || lastName === '' || phoneNumber === '') {
+      e.preventDefault();
+
+      seterrorWithCredentials(true);
+      return null;
+    }
+
     e.preventDefault();
     //...contacts => copy old array
     const newContact = {
@@ -59,43 +68,44 @@ const Contacts = () => {
     setFirstName('');
     setLastName('');
     setPhoneNumber('');
+    seterrorWithCredentials(false);
   };
 
   const editContact = () => {};
 
   let contactsMap = contacts.map((contact) => {
     return (
-      <div className={classes.Contact} key={contact._id}>
-        <div className={classes.Firstname}>
-          First name:{' '}
-          <span className={classes.FirstNameSpan}>{contact.firstName}</span>
+      <Link to={`/user/${credentials.username}/${contact._id}`}>
+        <div className={classes.Contact} key={contact._id}>
+          <div className={classes.Firstname}>
+            First name:{' '}
+            <span className={classes.FirstNameSpan}>{contact.firstName}</span>
+          </div>
+          <div className={classes.Firstname}>
+            Last name:{' '}
+            <span className={classes.FirstNameSpan}>{contact.lastName}</span>
+          </div>
+          <div className={classes.Firstname}>
+            Phone number:{' '}
+            <span className={classes.FirstNameSpan}>{contact.phoneNumber}</span>
+          </div>
+          <button>Edit</button>
+          <button>Delete</button>
         </div>
-        <div className={classes.Firstname}>
-          Last name:{' '}
-          <span className={classes.FirstNameSpan}>{contact.lastName}</span>
-        </div>
-        <div className={classes.Firstname}>
-          Phone number:{' '}
-          <span className={classes.FirstNameSpan}>{contact.phoneNumber}</span>
-        </div>
-        <button>Edit</button>
-        <button>Delete</button>
-      </div>
+      </Link>
     );
   });
 
   return (
     <div className={classes.Contacts}>
-      {credentials ? contactsMap : null}
-
-      <br />
       <form
         onSubmit={appendContact}
         style={{ display: 'flex', flexDirection: 'column' }}
       >
         <label htmlFor="firstName">
-          First name
+          <span className={classes.FormSpan}> First name </span>
           <input
+            className={classes.InputForm}
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
             id="firstName"
@@ -103,8 +113,9 @@ const Contacts = () => {
           />
         </label>
         <label htmlFor="lastName">
-          Last name
+          <span className={classes.FormSpan}> Last name</span>
           <input
+            className={classes.InputForm}
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
             id="lastName"
@@ -112,16 +123,27 @@ const Contacts = () => {
           />
         </label>
         <label htmlFor="phoneNumber">
-          Phone number
+          <span className={classes.FormSpan}> Phone number</span>
           <input
+            className={classes.InputForm}
             value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
             id="phoneNumber"
             type="text"
           />
         </label>
-        <button type="submit">Add</button>
+        {errorWithCredentials ? (
+          <p className={classes.InvalidCredentails}>Invalid credentials</p>
+        ) : null}
+
+        <button className={classes.AddButton} type="submit">
+          Add
+        </button>
       </form>
+      <br />
+      <div className={classes.ContactsScroll}>
+        {credentials ? contactsMap : null}
+      </div>
     </div>
   );
 };

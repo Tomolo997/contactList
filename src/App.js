@@ -6,6 +6,7 @@ import LoginPage from './Containers/LoginPage/LoginPage';
 import RegisterPage from './Containers/RegisterPage/RegisterPage';
 import React, { useState } from 'react';
 import User from './Containers/User/User';
+import Contact from './Containers/Contact/Contact';
 export const CredentialContext = React.createContext(null);
 function App() {
   const credentialState = useState(null);
@@ -18,6 +19,7 @@ function App() {
             <Route path="/login" exact component={LoginPage} />
             <Route path="/Register" exact component={RegisterPage} />
             <Route path="/user/:id" exact component={User} />
+            <Route path="/user/:id/:idContact" exact component={Contact} />
           </Switch>
         </BrowserRouter>
       </CredentialContext.Provider>
