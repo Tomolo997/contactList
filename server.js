@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const path = require('path');
 const cors = require('cors');
 const app = express();
 const mongoose = require('mongoose');
@@ -9,6 +10,8 @@ mongoose.connect('mongodb://localhost/todo', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
+
+const port = process.env.PORT || 4000;
 
 //Schemas
 const userSchema = new mongoose.Schema({
@@ -28,7 +31,17 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
   //when we are connected we want to host our rest API, we want to listen and start the eexpress service once we connect to the database
-  app.listen(4000, () => {
+
+  //serve assets if ijn production
+  if (process.env.NODE_ENV === 'production') {
+    //set static folder
+    app.use(express.static('client/build'));
+    app.get('*', (req, res) => {
+      res.sendFile(path.resolve(__dirname, 'client/build/index.html'));
+    });
+  }
+
+  app.listen(port, () => {
     console.log('app listening on localHost');
   });
 });
