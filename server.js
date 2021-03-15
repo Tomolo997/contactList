@@ -142,13 +142,17 @@ app.put('/contact/:user/:id', async (req, res) => {
   const { firstName, lastName, phoneNumber } = req.body;
   console.log(username);
   console.log(idOfAuser);
-  console.log('Updated first Name', firstName);
-  console.log(('Updated first Name', lastName));
-  console.log(('Updated first Name', phoneNumber));
   const user = await User.findOne({ username }).exec();
   await Contacts.updateOne(
     { userId: user._id },
-    { $pull: { contacts: { _id: idOfAuser } } }
+    {
+      contacts: {
+        _id: idOfAuser,
+        firstName: firstName,
+        lastName: lastName,
+        phoneNumber: phoneNumber,
+      },
+    }
   );
   if (!user) {
     res.status(403);

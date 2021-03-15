@@ -13,6 +13,7 @@ const Contact = (props) => {
   const [deleted, setDeleted] = useState(false);
   const [lastName, setLastName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [finalUpdate, setFinalUpdate] = useState(false);
   const [id, setId] = useState('');
 
   const [updatedFirstName, setUpdatedFirstName] = useState('');
@@ -47,7 +48,7 @@ const Contact = (props) => {
           fillOutTheContact(contacts.contacts);
         } else return;
       });
-  }, []);
+  }, [finalUpdate]);
 
   const deleteUser = (id) => {
     fetch(`http://localhost:4000/contact/${credentials.username}/` + id, {
@@ -85,7 +86,8 @@ const Contact = (props) => {
         }),
       }
     );
-    setDeleted(true);
+    setFinalUpdate(!finalUpdate);
+    setUpdate(!update);
   };
 
   let UpdateMe = (
