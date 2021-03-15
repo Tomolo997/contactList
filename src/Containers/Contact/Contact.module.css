@@ -7,7 +7,6 @@
 .ContactInfo {
   height: 20rem;
   width: 50rem;
-  background-color: aqua;
   margin-top: 2rem;
   display: flex;
   flex-direction: column;
@@ -17,4 +16,22 @@
 .ReturnHomeLink {
   font-size: 2rem;
   text-decoration: none;
+}
+.ContactInfoDiv {
+  font-size: 2rem;
+  align-self: flex-start;
+}
+.ButtonsDiv {
+  position: absolute;
+  margin-left: 10rem;
+  display: flex;
+  flex-direction: column;
+}
+.Button {
+  padding: 1rem;
+  font-size: 1.4rem;
+}
+.UpdateMe {
+  position: absolute;
+  margin-left: 35rem;
 }

@@ -10,6 +10,7 @@ mongoose.connect('mongodb://localhost/todo', {
   useUnifiedTopology: true,
 });
 
+//Schemas
 const userSchema = new mongoose.Schema({
   username: String,
   password: String,
@@ -19,16 +20,10 @@ const contactSchema = new mongoose.Schema({
   contacts: [{ firstName: String, lastName: String, phoneNumber: String }],
 });
 
-const contact = new mongoose.Schema({
-  contactId: String,
-  firstName: String,
-  lastName: String,
-  phoneNumber: String,
-});
-
 const User = mongoose.model('User', userSchema);
 const Contacts = mongoose.model('Contacts', contactSchema);
-const Contact = mongoose.model('Contact', contact);
+
+//connection of the DB
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
@@ -37,10 +32,13 @@ db.once('open', function () {
     console.log('app listening on localHost');
   });
 });
+
+//routes
 app.get('/', (req, res) => {
   res.send('hellow world!');
 });
 
+//post new registered user
 app.post('/register', async (req, res) => {
   const { username, password } = req.body;
   //if the user exist then we return and send status 500
@@ -57,6 +55,7 @@ app.post('/register', async (req, res) => {
   });
 });
 
+//post logined user
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;
   //if the user exist then we return and send status 500
@@ -72,6 +71,7 @@ app.post('/login', async (req, res) => {
   });
 });
 
+//Post new contact
 app.post('/contacts', async (req, res) => {
   const { authorization } = req.headers;
   const [, token] = authorization.split(' ');
@@ -98,6 +98,7 @@ app.post('/contacts', async (req, res) => {
   res.json({ message: 'success' });
 });
 
+//Get all contacts
 app.get('/contacts', async (req, res) => {
   const { authorization } = req.headers;
   const [, token] = authorization.split(' ');
@@ -113,6 +114,7 @@ app.get('/contacts', async (req, res) => {
   res.json(contact);
 });
 
+//delete certain contact
 app.delete('/contact/:user/:id', async (req, res) => {
   const { authorization } = req.headers;
   const [, token] = authorization.split(' ');
@@ -134,6 +136,7 @@ app.delete('/contact/:user/:id', async (req, res) => {
   res.json(user);
 });
 
+//update certain contat
 app.put('/contact/:user/:id', async (req, res) => {
   const { authorization } = req.headers;
   const [, token] = authorization.split(' ');

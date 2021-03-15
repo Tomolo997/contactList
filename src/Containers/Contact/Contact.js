@@ -6,7 +6,6 @@ import classes from '../Contact/Contact.module.css';
 import { Link, useHistory } from 'react-router-dom';
 
 const Contact = (props) => {
-  const history = useHistory();
   const [credentials] = useContext(CredentialContext);
   const [firstName, setFirstName] = useState('');
   const [update, setUpdate] = useState(false);
@@ -61,13 +60,10 @@ const Contact = (props) => {
     setDeleted(true);
   };
 
-  const UpdateUser = () => {
-    console.log('first name', updatedFirstName);
-    console.log('Last name', updatedLastName);
-    console.log('PhoneNumber', updatedPhoneNumber);
+  const ToggleUpdate = () => {
     setUpdate(!update);
-    console.log(props.match.params.idContact);
   };
+
   const updateIt = () => {
     //fetch
     fetch(
@@ -124,19 +120,29 @@ const Contact = (props) => {
       <div className={classes.Contact}>
         {!deleted ? (
           <div className={classes.ContactInfo}>
-            <div>First name: {firstName}</div>
-            <div>Last name: {lastName}</div>
-            <div>phone number: {phoneNumber}</div>
-            <button onClick={() => deleteUser(id)}>Delete</button>
-            <button onClick={UpdateUser}>Update</button>
-            {update ? UpdateMe : null}
+            <div className={classes.ContactInfoDiv}>
+              First name: {firstName}
+            </div>
+            <div className={classes.ContactInfoDiv}>Last name: {lastName}</div>
+            <div className={classes.ContactInfoDiv}>
+              phone number: {phoneNumber}
+            </div>
+            <div className={classes.ButtonsDiv}>
+              <button className={classes.Button} onClick={() => deleteUser(id)}>
+                Delete
+              </button>
+              <button className={classes.Button} onClick={ToggleUpdate}>
+                Update
+              </button>
+            </div>
+            {update ? <div className={classes.UpdateMe}>{UpdateMe}</div> : null}
           </div>
         ) : (
           <Link
             className={classes.ReturnHomeLink}
             to={'/user/' + credentials.username}
           >
-            Return home
+            Return back to the user
           </Link>
         )}
       </div>
