@@ -117,15 +117,19 @@ app.delete('/contact/:user/:id', async (req, res) => {
   const { authorization } = req.headers;
   const [, token] = authorization.split(' ');
   const [username, password] = token.split(':');
-
-  const idOfAuser = req.params.id;
+  const idOfAuser = await req.params.id;
+  console.log(username);
   console.log(idOfAuser);
   const user = await User.findOne({ username }).exec();
-  await Contacts.updateOne({}, { $pull: { contacts: { _id: idOfAuser } } });
+  console.log(user);
+  await Contacts.updateOne(
+    { userId: user._id },
+    { $pull: { contacts: { _id: idOfAuser } } }
+  );
   if (!user) {
     res.status(403);
     res.json({ message: 'Invalid access' });
     return;
   }
-  res.json();
+  res.json(user);
 });

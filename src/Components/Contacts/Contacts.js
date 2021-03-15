@@ -70,8 +70,6 @@ const Contacts = () => {
     seterrorWithCredentials(false);
   };
 
-  const editContact = () => {};
-
   let contactsMap = contacts.map((contact) => {
     return (
       <Link to={`/user/${credentials.username}/${contact._id}`}>
