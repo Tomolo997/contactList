@@ -13,7 +13,7 @@ function App() {
   return (
     <div className="App">
       <CredentialContext.Provider value={credentialState}>
-        <BrowserRouter>
+        <BrowserRouter basename={process.env.PUBLIC_URL}>
           <Switch>
             <Route path="/" exact component={Home} />
             <Route path="/login" exact component={LoginPage} />
