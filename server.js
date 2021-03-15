@@ -18,8 +18,17 @@ const contactSchema = new mongoose.Schema({
   userId: String,
   contacts: [{ firstName: String, lastName: String, phoneNumber: String }],
 });
+
+const contact = new mongoose.Schema({
+  contactId: String,
+  firstName: String,
+  lastName: String,
+  phoneNumber: String,
+});
+
 const User = mongoose.model('User', userSchema);
 const Contacts = mongoose.model('Contacts', contactSchema);
+const Contact = mongoose.model('Contact', contact);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
@@ -68,7 +77,6 @@ app.post('/contacts', async (req, res) => {
   const [, token] = authorization.split(' ');
   const [username, password] = token.split(':');
   const contacts = req.body;
-  console.log(contacts);
   //if the user exist then we return and send status 500
   //we find the user send from the front end and if the user doesnt exist then the status code 403 is sent
   const user = await User.findOne({ username }).exec();
@@ -95,7 +103,6 @@ app.get('/contacts', async (req, res) => {
   const [, token] = authorization.split(' ');
   const [username, password] = token.split(':');
   //we find the user send from the front end and if the user doesnt exist then the status code 403 is sent
-
   const user = await User.findOne({ username }).exec();
   if (!user || user.password !== password) {
     res.status(403);
@@ -103,6 +110,22 @@ app.get('/contacts', async (req, res) => {
     return;
   }
   const contact = await Contacts.findOne({ userId: user._id }).exec();
-  console.log(contact);
   res.json(contact);
+});
+
+app.delete('/contact/:user/:id', async (req, res) => {
+  const { authorization } = req.headers;
+  const [, token] = authorization.split(' ');
+  const [username, password] = token.split(':');
+
+  const idOfAuser = req.params.id;
+  console.log(idOfAuser);
+  const user = await User.findOne({ username }).exec();
+  await Contacts.updateOne({}, { $pull: { contacts: { _id: idOfAuser } } });
+  if (!user) {
+    res.status(403);
+    res.json({ message: 'Invalid access' });
+    return;
+  }
+  res.json();
 });

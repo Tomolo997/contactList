@@ -28,10 +28,9 @@ const Contacts = () => {
       .then((contacts) => {
         if (contacts !== null) {
           setContacts(contacts.contacts);
-          console.log(credentials);
         } else return;
       });
-  }, []);
+  }, [contacts]);
 
   const persist = (newContacts) => {
     fetch('http://localhost:4000/contacts', {
