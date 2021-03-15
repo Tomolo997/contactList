@@ -133,3 +133,27 @@ app.delete('/contact/:user/:id', async (req, res) => {
   }
   res.json(user);
 });
+
+app.put('/contact/:user/:id', async (req, res) => {
+  const { authorization } = req.headers;
+  const [, token] = authorization.split(' ');
+  const [username, password] = token.split(':');
+  const idOfAuser = await req.params.id;
+  const { firstName, lastName, phoneNumber } = req.body;
+  console.log(username);
+  console.log(idOfAuser);
+  console.log('Updated first Name', firstName);
+  console.log(('Updated first Name', lastName));
+  console.log(('Updated first Name', phoneNumber));
+  const user = await User.findOne({ username }).exec();
+  await Contacts.updateOne(
+    { userId: user._id },
+    { $pull: { contacts: { _id: idOfAuser } } }
+  );
+  if (!user) {
+    res.status(403);
+    res.json({ message: 'Invalid access' });
+    return;
+  }
+  res.json(user);
+});

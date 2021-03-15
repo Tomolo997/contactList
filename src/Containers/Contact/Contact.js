@@ -65,6 +65,27 @@ const Contact = (props) => {
     console.log('Last name', updatedLastName);
     console.log('PhoneNumber', updatedPhoneNumber);
     setUpdate(!update);
+    console.log(props.match.params.idContact);
+  };
+  const updateIt = () => {
+    //fetch
+    fetch(
+      `http://localhost:4000/contact/${credentials.username}/` +
+        props.match.params.idContact,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'Application/json',
+          Authorization: `Basic ${credentials.username}:${credentials.password}`,
+        },
+        body: JSON.stringify({
+          firstName: updatedFirstName,
+          lastName: updatedLastName,
+          phoneNumber: updatedPhoneNumber,
+        }),
+      }
+    );
+    setDeleted(true);
   };
 
   let UpdateMe = (
@@ -91,7 +112,7 @@ const Contact = (props) => {
         />
       </div>
 
-      <button>Update Me</button>
+      <button onClick={updateIt}>Update Me</button>
     </div>
   );
 
