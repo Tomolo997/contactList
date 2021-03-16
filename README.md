@@ -1,16 +1,7 @@
 # contactList
 
-how to run an app 
+contact list app, 
 
-git clone https://github.com/Tomolo997/contactList.git
-cd contactList
-npm install
-cd .\client\
-npm install
-npm start 
+login or register,
 
-"open new terminal for your server to run" 
-npm start 
-
-now you got yourself a working app 
-
+add/remove/update contacts for different users
