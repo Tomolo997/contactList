@@ -6,12 +6,15 @@ const app = express();
 const mongoose = require('mongoose');
 app.use(cors());
 app.use(express.json());
-mongoose.connect('mongodb://localhost/todo', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-
 const port = process.env.PORT || 4000;
+mongoose.connect(
+  'mongodb+srv://dbUser:dbUser@cluster0.3fyqd.mongodb.net/todo?retryWrites=true&w=majority' ||
+    'mongodb://localhost/todo',
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+);
 
 //Schemas
 const userSchema = new mongoose.Schema({
@@ -30,25 +33,14 @@ const Contacts = mongoose.model('Contacts', contactSchema);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
+  console.log('connection is here');
   //when we are connected we want to host our rest API, we want to listen and start the eexpress service once we connect to the database
-
   //serve assets if ijn production
-  if (process.env.NODE_ENV === 'production') {
-    //set static folder
-    app.use(express.static('client/build'));
-    app.get('*', (req, res) => {
-      res.sendFile(path.resolve(__dirname, 'client/build/index.html'));
-    });
-  }
-
-  app.listen(port, () => {
-    console.log('app listening on localHost');
-  });
 });
 
 //routes
 app.get('/', (req, res) => {
-  res.send('hellow world!');
+  res.send('root');
 });
 
 //post new registered user
@@ -160,13 +152,12 @@ app.put('/contact/:user/:id', async (req, res) => {
   console.log(idOfAuser);
   const user = await User.findOne({ username }).exec();
   await Contacts.updateOne(
-    { userId: user._id },
+    { userId: user._id, 'contacts._id': idOfAuser },
     {
-      contacts: {
-        _id: idOfAuser,
-        firstName: firstName,
-        lastName: lastName,
-        phoneNumber: phoneNumber,
+      $set: {
+        'contacts.$.firstName': firstName,
+        'contacts.$.lastName': lastName,
+        'contacts.$.phoneNumber': phoneNumber,
       },
     }
   );
@@ -176,4 +167,16 @@ app.put('/contact/:user/:id', async (req, res) => {
     return;
   }
   res.json(user);
+});
+
+if (process.env.NODE_ENV === 'production') {
+  //set static folder
+  app.use(express.static('client/build'));
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client/build/index.html'));
+  });
+}
+
+app.listen(port, () => {
+  console.log('app listening' + port);
 });
